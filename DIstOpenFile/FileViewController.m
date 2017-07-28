@@ -10,8 +10,8 @@
 #import "FileTopView.h"
 #import "FileProgressView.h"
 #import "FilePhotoView.h"
-#import <AFNetworking.h>
-#import <PureLayout.h>
+#import "AFNetworking.h"
+#import "PureLayout.h"
 @interface FileViewController ()
 /******************* view *******************/
 @property (nonatomic,strong) FileTopView *topView;
