@@ -11,6 +11,7 @@
 @interface FileTopView ()
 @property (nonatomic,strong) UILabel *nameLabel;
 @property (nonatomic,strong) UIButton *closeButton;
+@property (nonatomic,strong) UIButton *reloadButton;
 @property (nonatomic,strong) UIView *bottomLine;
 
 @end
@@ -46,6 +47,13 @@
         self.closeHandler();
     }
 }
+
+- (void)reload
+{
+    if (self.reloadHandler) {
+        self.reloadHandler();
+    }
+}
 #pragma mark - getter
 - (UILabel *)nameLabel
 {
@@ -53,7 +61,6 @@
         _nameLabel = [[UILabel alloc]initWithFrame:CGRectZero];
         [_nameLabel setTintColor:[UIColor blackColor]];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
-//        [_nameLabel setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleRightMargin];
     }
     return _nameLabel;
 }
@@ -63,11 +70,25 @@
     if (!_closeButton) {
         _closeButton = [[UIButton alloc]initWithFrame:CGRectZero];
         [_closeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_closeButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+        [_closeButton setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];
         [_closeButton setTitle:@"关闭" forState:UIControlStateNormal];
-//        [_nameLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth];
         [_closeButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     }
     return _closeButton;
+}
+
+- (UIButton *)reloadButton
+{
+    if (!_reloadButton) {
+        _reloadButton = [[UIButton alloc]initWithFrame:CGRectZero];
+        [_reloadButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_reloadButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+        [_reloadButton setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];
+        [_reloadButton setTitle:@"刷新" forState:UIControlStateNormal];
+        [_reloadButton addTarget:self action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _reloadButton;
 }
 
 - (UIView *)bottomLine
@@ -75,7 +96,6 @@
     if (!_bottomLine) {
         _bottomLine = [[UIView alloc]initWithFrame:CGRectZero];
         [_bottomLine setBackgroundColor:[UIColor lightGrayColor]];
-//        [_bottomLine setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     }
     return _bottomLine;
 }

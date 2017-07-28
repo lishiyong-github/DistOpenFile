@@ -10,5 +10,6 @@
 
 @interface FileTopView : UIView
 @property (nonatomic,copy) void(^closeHandler)();
+@property (nonatomic,copy) void(^reloadHandler)();
 - (void)setTitle:(NSString *)title;
 @end

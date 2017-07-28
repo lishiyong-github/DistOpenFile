@@ -49,7 +49,6 @@
     [self configSubView];
     //download file
     if (self.local || [[NSFileManager defaultManager] fileExistsAtPath:self.localPath]) {
-        _localPath = nil;
         [self openFile];
     }else{
         [self downloadFile];
@@ -113,6 +112,10 @@
         [_topView setCloseHandler:^{
             __strong __typeof__(weakSelf) strongSelf = weakSelf;
             [strongSelf close];
+        }];
+        [_topView setReloadHandler:^{
+            __strong __typeof__(weakSelf) strongSelf = weakSelf;
+            [strongSelf openFile];
         }];
     }
     return _topView;
@@ -180,7 +183,6 @@
     NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:^(NSProgress *progress){
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         CGFloat haveFinished = [[NSString stringWithFormat:@"%.2f",[progress fractionCompleted]] floatValue];
-        NSLog(@"******************************************\n %.2f",haveFinished);
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf.progressView setHaveFinished:haveFinished];
         });
@@ -192,7 +194,6 @@
         __strong __typeof__(weakSelf) strongSelf = weakSelf;
         if (error) {
             NSLog(@"%@",[error description]);
-            NSLog(@"******************************************\n %@",error);
         }else{
             [strongSelf downloadFinish];
             
@@ -219,6 +220,7 @@
         self.photoView.frame = CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height-40);
         [self.photoView showImageFilePath:self.localPath];
     }else if ([fileExt isEqualToString:@"dwg"] || [fileExt isEqualToString:@"zip"]|| [fileExt isEqualToString:@"rar"]){
+        [self.dwgLabel setHidden:NO];
         UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:self.localPath]];
         [documentController presentOptionsMenuFromRect:CGRectMake(455, 440, 100, 100) inView:self.view animated:YES];
     }else if ([fileExt isEqualToString:@"txt"]){
