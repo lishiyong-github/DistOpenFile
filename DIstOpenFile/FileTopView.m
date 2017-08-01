@@ -23,6 +23,7 @@
         [self addSubview:self.nameLabel];
         [self addSubview:self.closeButton];
         [self addSubview:self.bottomLine];
+        [self addSubview:self.reloadButton];
         [self setBackgroundColor:[UIColor whiteColor]];
     }
     return self;
@@ -34,6 +35,7 @@
     [self.nameLabel setFrame:CGRectMake(15, 5, self.frame.size.width-115, 30)];
     [self.closeButton setFrame:CGRectMake(self.frame.size.width-80, 5, 60, 30)];
     [self.bottomLine setFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
+    [self.reloadButton setFrame:CGRectMake(self.frame.size.width-130, 5, 40, 30)];
 }
 
 - (void)setTitle:(NSString *)title

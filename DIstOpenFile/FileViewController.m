@@ -156,6 +156,7 @@
         _dwgLabel = [UILabel newAutoLayoutView];
         [_dwgLabel setText:@"若要打开文件，请单击右上角“刷新”按钮。"];
         [_dwgLabel setFont:[UIFont systemFontOfSize:14]];
+        [_dwgLabel setHidden:YES];
     }
     return _dwgLabel;
 }
@@ -215,7 +216,7 @@
 {
     [self.progressView removeFromSuperview];
     NSString *fileExt = [self.fileName pathExtension];
-    if (![fileExt isEqualToString:@"png"] || [fileExt isEqualToString:@"jpg"] ||[fileExt isEqualToString:@"bmp"]) {
+    if ([fileExt isEqualToString:@"png"] || [fileExt isEqualToString:@"jpg"] ||[fileExt isEqualToString:@"bmp"]) {
         [self.photoView setHidden:NO];
         self.photoView.frame = CGRectMake(0, 40, self.view.bounds.size.width, self.view.bounds.size.height-40);
         [self.photoView showImageFilePath:self.localPath];
