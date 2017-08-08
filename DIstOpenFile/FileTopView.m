@@ -7,7 +7,6 @@
 //
 
 #import "FileTopView.h"
-
 @interface FileTopView ()
 @property (nonatomic,strong) UILabel *nameLabel;
 @property (nonatomic,strong) UIButton *closeButton;
@@ -25,17 +24,28 @@
         [self addSubview:self.bottomLine];
         [self addSubview:self.reloadButton];
         [self setBackgroundColor:[UIColor whiteColor]];
+        [self setNeedsUpdateConstraints];
     }
     return self;
 }
 
-- (void)layoutSubviews
+- (void)myUpdateViewConstraints
 {
-    [super layoutSubviews];
-    [self.nameLabel setFrame:CGRectMake(15, 5, self.frame.size.width-115, 30)];
-    [self.closeButton setFrame:CGRectMake(self.frame.size.width-80, 5, 60, 30)];
-    [self.bottomLine setFrame:CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1)];
-    [self.reloadButton setFrame:CGRectMake(self.frame.size.width-130, 5, 40, 30)];
+    [@[self.nameLabel,self.closeButton,self.reloadButton] autoAlignViewsToAxis:ALAxisHorizontal];
+    [self.nameLabel autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+    [self.nameLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:15];
+    [self.bottomLine autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+    [self.bottomLine autoSetDimension:ALDimensionHeight toSize:1];
+    
+    [self.closeButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:15];
+    [self.reloadButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.closeButton withOffset:-10];
+    [self.reloadButton autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.nameLabel withOffset:20];
+    [@[self.closeButton,self.reloadButton] autoSetViewsDimension:ALDimensionWidth toSize:40];
+    
+    [NSLayoutConstraint autoSetPriority:UILayoutPriorityRequired forConstraints:^{
+        [self.nameLabel autoSetContentHuggingPriorityForAxis:ALAxisHorizontal];
+        [self.nameLabel autoSetContentCompressionResistancePriorityForAxis:ALAxisHorizontal];
+    }];
 }
 
 - (void)setTitle:(NSString *)title
@@ -60,7 +70,7 @@
 - (UILabel *)nameLabel
 {
     if (!_nameLabel) {
-        _nameLabel = [[UILabel alloc]initWithFrame:CGRectZero];
+        _nameLabel = [UILabel newAutoLayoutView];
         [_nameLabel setTintColor:[UIColor blackColor]];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
     }
@@ -70,7 +80,7 @@
 - (UIButton *)closeButton
 {
     if (!_closeButton) {
-        _closeButton = [[UIButton alloc]initWithFrame:CGRectZero];
+        _closeButton = [UIButton newAutoLayoutView];
         [_closeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_closeButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
         [_closeButton setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];
@@ -83,7 +93,7 @@
 - (UIButton *)reloadButton
 {
     if (!_reloadButton) {
-        _reloadButton = [[UIButton alloc]initWithFrame:CGRectZero];
+        _reloadButton = [UIButton newAutoLayoutView];
         [_reloadButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_reloadButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
         [_reloadButton setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];
@@ -96,7 +106,7 @@
 - (UIView *)bottomLine
 {
     if (!_bottomLine) {
-        _bottomLine = [[UIView alloc]initWithFrame:CGRectZero];
+        _bottomLine = [UIView newAutoLayoutView];
         [_bottomLine setBackgroundColor:[UIColor lightGrayColor]];
     }
     return _bottomLine;

@@ -27,4 +27,6 @@ s.dependency "AFNetworking", '~> 3.1.0'
 
 s.dependency "PureLayout",'~>3.0.2'
 
+s.dependency "DISTXAspect"
+
 end
