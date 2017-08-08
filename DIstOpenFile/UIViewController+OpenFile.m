@@ -9,9 +9,9 @@
 #import "UIViewController+OpenFile.h"
 #import "FileViewController.h"
 @implementation UIViewController (OpenFile)
--(void)openFileWithName:(NSString *)name path:(NSString *)path ext:(NSString *)ext local:(BOOL)local
+-(void)openFileWithName:(NSString *)name path:(NSString *)path materialID:(NSString *)materialID local:(BOOL)local
 {
-    FileViewController   *fileViewController = [[FileViewController alloc] initWithFileName:name filePath:path fileExt:ext local:local];
+    FileViewController   *fileViewController = [[FileViewController alloc] initWithFileName:name filePath:path materialID:materialID local:local];
     [self presentViewController:fileViewController animated:YES completion:nil];
 }
 @end

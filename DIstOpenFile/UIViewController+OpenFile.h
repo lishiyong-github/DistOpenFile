@@ -12,7 +12,7 @@
 /*
  * name: 文件名 如：文件.pdf
  * path: 文件的下载路径
- * ext : 文件的后缀名 如：pdf
+ * materialID : 文件的ID(唯一标识) 如：3.8656b3fb-95c5-4855-9b90-90f572fd5d32
  */
-- (void)openFileWithName:(NSString *)name path:(NSString *)path ext:(NSString *)ext local:(BOOL)local;
+- (void)openFileWithName:(NSString *)name path:(NSString *)path materialID:(NSString *)materialID local:(BOOL)local;
 @end

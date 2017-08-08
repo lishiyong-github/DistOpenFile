@@ -17,7 +17,7 @@
  */
 @property (nonatomic,strong) NSString *fileName;
 @property (nonatomic,strong) NSString *filePath;
-@property (nonatomic,strong) NSString *fileExt;
+@property (nonatomic,strong) NSString *materialID;
 @property (nonatomic,assign) BOOL local;
-- (instancetype)initWithFileName:(NSString *)fileName filePath:(NSString *)filePath fileExt:(NSString *)fileExt local:(BOOL)local;
+- (instancetype)initWithFileName:(NSString *)fileName filePath:(NSString *)filePath materialID:(NSString *)materialID local:(BOOL)local;
 @end

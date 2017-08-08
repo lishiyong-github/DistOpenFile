@@ -25,13 +25,13 @@
 @end
 
 @implementation FileViewController
-- (instancetype)initWithFileName:(NSString *)fileName filePath:(NSString *)filePath fileExt:(NSString *)fileExt local:(BOOL)local
+- (instancetype)initWithFileName:(NSString *)fileName filePath:(NSString *)filePath materialID:(NSString *)materialID local:(BOOL)local
 {
     self = [super init];
     if (self) {
         self.fileName = fileName;
         self.filePath = filePath;
-        self.fileExt = fileExt;
+        self.materialID = materialID;
         self.local = local;
         if (local) {
             _localPath = filePath;
@@ -137,6 +137,7 @@
     if (!_webView) {
         _webView = [UIWebView newAutoLayoutView];
         [_webView setHidden:YES];
+        [_webView setScalesPageToFit:YES];
     }
     return _webView;
 }
@@ -170,7 +171,7 @@
         if (![[NSFileManager defaultManager] fileExistsAtPath:fileLocalPath isDirectory:&dictionary]) {
             [[NSFileManager defaultManager] createDirectoryAtPath:fileLocalPath withIntermediateDirectories:YES attributes:nil error:nil];
         }
-        _localPath = [fileLocalPath stringByAppendingPathComponent:self.fileName];;
+        _localPath = [fileLocalPath stringByAppendingPathComponent:self.materialID];;
     }
     return _localPath;
 }
