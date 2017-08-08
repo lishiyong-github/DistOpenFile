@@ -44,14 +44,19 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.edgesForExtendedLayout = UIRectEdgeNone;
-   
+    
     // configSubView
     [self configSubView];
     //download file
     if (self.local || [[NSFileManager defaultManager] fileExistsAtPath:self.localPath]) {
         [self openFile];
     }else{
-        [self downloadFile];
+        BOOL directory;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:self.localPath isDirectory:&directory]) {
+            [self openFile];
+        }else{
+            [self downloadFile];
+        }
     }
 }
 
