@@ -7,6 +7,7 @@
 //
 
 #import "FileTopView.h"
+#import "PureLayout.h"
 @interface FileTopView ()
 @property (nonatomic,strong) UILabel *nameLabel;
 @property (nonatomic,strong) UIButton *closeButton;
