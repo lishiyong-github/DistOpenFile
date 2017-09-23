@@ -179,7 +179,7 @@
         if (![[NSFileManager defaultManager] fileExistsAtPath:fileLocalPath isDirectory:&dictionary]) {
             [[NSFileManager defaultManager] createDirectoryAtPath:fileLocalPath withIntermediateDirectories:YES attributes:nil error:nil];
         }
-        _localPath = [fileLocalPath stringByAppendingPathComponent:self.materialID];;
+        _localPath = [NSString stringWithFormat:@"%@/%@.%@",fileLocalPath,self.materialID,self.fileName.pathExtension];
     }
     return _localPath;
 }

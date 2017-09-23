@@ -30,7 +30,7 @@
 
 - (void)clicked
 {
-    [self openFileWithName:@"公司服务器.txt" path:@"http://58.246.138.178:8040/jxyd/ServiceProvider.ashx?type=smartplan&action=downloadMaterial&fileId=914010" materialID:@"1" local:NO];
+    [self openFileWithName:@"关于印发2017年度市委人才工作领导小组成员单位重点人才工作清单和市委人才工作领导小组成员单位人才服务项目清单的通知.txt" path:@"http://58.246.138.178:8040/jxyd/ServiceProvider.ashx?type=smartplan&action=downloadMaterial&fileId=906090" materialID:@"1" local:NO];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
