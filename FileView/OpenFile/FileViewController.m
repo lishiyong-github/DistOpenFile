@@ -7,14 +7,12 @@
 //
 
 #import "FileViewController.h"
-#import "FileTopView.h"
 #import "FileProgressView.h"
 #import "FilePhotoView.h"
 #import "AFNetworking.h"
 #import "PureLayout.h"
 @interface FileViewController ()
 /******************* view *******************/
-@property (nonatomic,strong) FileTopView *topView;
 @property (nonatomic,strong) FileProgressView *progressView;
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) FilePhotoView *photoView;
@@ -22,6 +20,10 @@
 
 @property (nonatomic,strong) NSString *localPath;
 @property (nonatomic,strong) NSURLSessionDownloadTask  *downloadTask;
+
+//navigation bar
+@property (nonatomic,strong) UIButton *closeButton;
+@property (nonatomic,strong) UIButton *reloadButton;
 @end
 
 @implementation FileViewController
@@ -44,40 +46,36 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    
+   
     // configSubView
+    [self configNavigationBar];
     [self configSubView];
     //download file
     if (self.local || [[NSFileManager defaultManager] fileExistsAtPath:self.localPath]) {
         [self openFile];
     }else{
-        BOOL directory;
-        if ([[NSFileManager defaultManager] fileExistsAtPath:self.localPath isDirectory:&directory]) {
-            [self openFile];
-        }else{
-            [self downloadFile];
-        }
+        [self downloadFile];
     }
+}
+
+- (void)configNavigationBar
+{
+    self.title = self.fileName;
+    UIBarButtonItem *item1 = [[UIBarButtonItem alloc]initWithCustomView:self.reloadButton];
+    UIBarButtonItem *item2 = [[UIBarButtonItem alloc]initWithCustomView:self.closeButton];
+    self.navigationItem.rightBarButtonItems = @[item2,item1];
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (void)configSubView
 {
-    //add topview
-    [self.view addSubview:self.topView];
     [self.view addSubview:self.webView];
     [self.view addSubview:self.photoView];
     [self.view addSubview:self.progressView];
     [self.view addSubview:self.dwgLabel];
     
-    
     //addConstraints
     [self addConstraints];
-    [self.topView setTitle:self.fileName];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
 }
 
 - (BOOL)shouldAutorotate
@@ -90,14 +88,9 @@
     [self.progressView autoCenterInSuperview];
     [self.progressView autoSetDimensionsToSize:CGSizeMake(150, 150)];
     
-    [self.topView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-    [self.topView autoSetDimension:ALDimensionHeight toSize:40];
+    [self.webView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     
-    [self.webView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-    [self.webView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.topView];
-    
-    [self.photoView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-    [self.photoView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.topView];
+    [self.photoView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     
     [self.dwgLabel autoCenterInSuperview];
 }
@@ -109,22 +102,6 @@
 }
 
 #pragma mark - getter
-- (FileTopView *)topView
-{
-    if (!_topView) {
-        _topView = [FileTopView newAutoLayoutView];
-        __weak __typeof__(self) weakSelf = self;
-        [_topView setCloseHandler:^{
-            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            [strongSelf close];
-        }];
-        [_topView setReloadHandler:^{
-            __strong __typeof__(weakSelf) strongSelf = weakSelf;
-            [strongSelf openFile];
-        }];
-    }
-    return _topView;
-}
 
 - (FileProgressView *)progressView
 {
@@ -167,6 +144,32 @@
     return _dwgLabel;
 }
 
+- (UIButton *)closeButton
+{
+    if (!_closeButton) {
+        _closeButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 50, 30)];
+        [_closeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_closeButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+        [_closeButton setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];
+        [_closeButton setTitle:@"关闭" forState:UIControlStateNormal];
+        [_closeButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _closeButton;
+}
+
+- (UIButton *)reloadButton
+{
+    if (!_reloadButton) {
+        _reloadButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 50, 30)];
+        [_reloadButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_reloadButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+        [_reloadButton setTitleColor:[UIColor blueColor] forState:UIControlStateSelected];
+        [_reloadButton setTitle:@"刷新" forState:UIControlStateNormal];
+        [_reloadButton addTarget:self action:@selector(openFile) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _reloadButton;
+}
+
 - (NSString *)localPath
 {
     if (!_localPath) {
@@ -176,7 +179,7 @@
         if (![[NSFileManager defaultManager] fileExistsAtPath:fileLocalPath isDirectory:&dictionary]) {
             [[NSFileManager defaultManager] createDirectoryAtPath:fileLocalPath withIntermediateDirectories:YES attributes:nil error:nil];
         }
-        _localPath = [NSString stringWithFormat:@"%@/%@.%@",fileLocalPath,self.materialID,self.fileName.pathExtension];
+        _localPath = [fileLocalPath stringByAppendingPathComponent:self.materialID];;
     }
     return _localPath;
 }

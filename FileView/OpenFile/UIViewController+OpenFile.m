@@ -12,6 +12,7 @@
 -(void)openFileWithName:(NSString *)name path:(NSString *)path materialID:(NSString *)materialID local:(BOOL)local
 {
     FileViewController   *fileViewController = [[FileViewController alloc] initWithFileName:name filePath:path materialID:materialID local:local];
-    [self presentViewController:fileViewController animated:YES completion:nil];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:fileViewController];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 @end
