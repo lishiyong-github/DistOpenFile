@@ -20,7 +20,7 @@
 
 @property (nonatomic,strong) NSString *localPath;
 @property (nonatomic,strong) NSURLSessionDownloadTask  *downloadTask;
-
+@property (nonatomic,strong) UIDocumentInteractionController *documentController;
 //navigation bar
 @property (nonatomic,strong) UIButton *closeButton;
 @property (nonatomic,strong) UIButton *reloadButton;
@@ -232,7 +232,8 @@
     }else if ([fileExt isEqualToString:@"dwg"] || [fileExt isEqualToString:@"zip"]|| [fileExt isEqualToString:@"rar"]){
         [self.dwgLabel setHidden:NO];
         UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:self.localPath]];
-        [documentController presentOptionsMenuFromRect:CGRectMake(455, 440, 100, 100) inView:self.view animated:YES];
+        self.documentController = documentController;
+        [self.documentController presentOptionsMenuFromRect:CGRectMake(455, 440, 100, 100) inView:self.view animated:YES];
     }else if ([fileExt isEqualToString:@"txt"]){
         self.webView.hidden = NO;
         NSData *txtData = [NSData dataWithContentsOfFile:self.localPath];
